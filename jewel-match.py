@@ -25,5 +25,37 @@ def display_playfield(playfield):
 
         print('\n')
 
+# TEST: Remove a jewel to test check_field()
+def remove_jewel(playfield):
+    x = int(input("X to remove: "))
+    y = int(input("Y to remove: "))
+
+    playfield[y][x] = ''
+
+    return playfield
+
+# If a jewel is removed, move above jewels down one
+def check_field(playfield):
+    for y in range(len(playfield)):
+        for x in range(len(playfield[y])):
+            if(playfield[y][x] == ''):
+                if(y > 0):
+                    pos = y
+                    # Move jewels down and empty space up
+                    while(pos > 0):
+                        playfield[pos][x], playfield[pos - 1][x] = playfield[pos - 1][x], playfield[pos][x]
+
+                        pos -= 1
+                else:
+                    pass
+            else:
+                pass
+
 playfield = create_playfield(8, 8)
+display_playfield(playfield)
+
+playfield = remove_jewel(playfield)
+display_playfield(playfield)
+
+check_field(playfield)
 display_playfield(playfield)
