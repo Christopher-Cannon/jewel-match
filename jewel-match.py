@@ -26,11 +26,9 @@ def display_playfield(playfield):
         print('\n')
 
 # TEST: Remove a jewel to test check_field()
-def remove_jewel(playfield):
-    x = int(input("X to remove: "))
-    y = int(input("Y to remove: "))
-
-    playfield[y][x] = ' '
+def remove_jewels(playfield, remove_list):
+    for c in remove_list:
+        playfield[c[0]][c[1]] = ' '
 
     return playfield
 
@@ -91,8 +89,60 @@ def check_field(playfield):
             else:
                 pass
 
+    return playfield
+
+# Attempt to find continuous rows or columns of 3 or more matching jewels and remove them
+def find_matches(playfield):
+    # Store coordinates to remove after one pass
+    destroy_list = []
+
+    for y in range(len(playfield)):
+        matches, start_x, char_match = 1, 0, ''
+
+        for x in range(len(playfield[y])):
+            print("X: {}, Y: {}".format(x, y)) # DEBUG
+            # Check horizontally
+            if(char_match != playfield[y][x]):
+                print("Held: {}, Cur: {}".format(char_match, playfield[y][x])) # DEBUG
+                # If there were more than 3 in a row
+                if(matches > 2):
+                    # Append all coords from stored position to destroy list
+                    for z in range(matches):
+                        destroy_list.append([y, start_x + z])
+                        print("Appending values...") # DEBUG
+                # Char to match next char against
+                char_match = playfield[y][x]
+                matches = 1
+                start_x = x
+            else:
+                matches += 1
+                print("Matches += 1, Val: {}".format(matches)) # DEBUG
+
+            # Check vertically
+
+    return destroy_list
+
 playfield = create_playfield(8, 8)
 display_playfield(playfield)
 
-playfield = swap_jewels(playfield)
+print('Created playfield\n') # DEBUG
+
+ret_list = find_matches(playfield)
+print(ret_list)
+
+print('\nReturned coords of jewels to remove\n') # DEBUG
+
+playfield = remove_jewels(playfield, ret_list)
 display_playfield(playfield)
+
+print('Removed jewels\n') # DEBUG
+
+playfield = check_field(playfield)
+display_playfield(playfield)
+
+print('Playfield checked\n') # DEBUG
+
+playfield = fill_empty(playfield)
+display_playfield(playfield)
+
+print('Jewels added\n') # DEBUG
