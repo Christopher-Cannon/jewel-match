@@ -5,9 +5,9 @@ def get_size():
     while(True):
         try:
             print("Choose a grid size")
-            size = int(input("8 - 24: "))
+            size = int(input("7 - 10: "))
 
-            if(8 <= size <= 24):
+            if(7 <= size <= 10):
                 print('')
                 return size
             else:
@@ -19,19 +19,13 @@ def get_size():
 
 # Create and populate jewel grid
 def create_playfield(size):
-    if(size >= 16):
-        jewels = ['X', 'O', '#', '@', '%', '=', ':', '¥']
-    else:
-        jewels = ['X', 'O', '#', '@', '%', '=']
+    jewels = ['X', 'O', '#', '@', '%', '=']
 
     return [[random.choice(jewels) for x in range(size)] for y in range(size)]
 
 # Find any blank spots and fill with jewels
 def fill_empty(playfield):
-    if(len(playfield) >= 16):
-        jewels = ['X', 'O', '#', '@', '%', '=', ':', '¥']
-    else:
-        jewels = ['X', 'O', '#', '@', '%', '=']
+    jewels = ['X', 'O', '#', '@', '%', '=']
 
     for row in playfield:
         for x in range(len(row)):
@@ -42,11 +36,15 @@ def fill_empty(playfield):
 
 # Output the playfield
 def display_playfield(playfield):
-    for row in playfield:
-        for elem in row:
+    for y in [x + 1 for x in range(len(playfield))]:
+        print(y, end=' ')
+    print('\n')
+
+    for row in range(len(playfield)):
+        for elem in playfield[row]:
             print(elem, end=' ')
 
-        print('')
+        print('', row + 1)
     print('')
 
 # Remove jewels marked in remove_list
@@ -197,7 +195,7 @@ def main():
     display_playfield(playfield)
     # Continue while player has moves remaining
     while(moves > 0):
-        jewels_marked, combo = 0, 1
+        jewels_marked, combo = 0, 0
         print("Moves remaining: {}".format(moves))
         print("Current score: {}".format(score))
 
@@ -213,14 +211,15 @@ def main():
 
             playfield = prepare_field(playfield, destroy_list)
             destroy_list = find_matches(playfield)
+            jewels_marked += len(destroy_list)
 
         if(jewels_marked > 0):
             score += (jewels_marked * combo) * 10
-            moves += 1 * ((combo // 2) + 1)
+            moves += 1 * (combo // 2)
 
             print("x{} combo!".format(combo))
             print("+{} score!".format((jewels_marked * combo) * 10))
-            print("+{} moves!".format(1 * ((combo // 2) + 1)))
+            print("+{} moves!\n".format(1 * ((combo // 2) + 1)))
         else:
             pass
 
