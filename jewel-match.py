@@ -20,7 +20,7 @@ def get_size():
 # Create and populate jewel grid
 def create_playfield(size):
     if(size >= 16):
-        jewels = ['X', 'O', '#', '@', '%', '=', ':', '$']
+        jewels = ['X', 'O', '#', '@', '%', '=', ':', '¥']
     else:
         jewels = ['X', 'O', '#', '@', '%', '=']
 
@@ -28,8 +28,8 @@ def create_playfield(size):
 
 # Find any blank spots and fill with jewels
 def fill_empty(playfield):
-    if(size >= 16):
-        jewels = ['X', 'O', '#', '@', '%', '=', ':', '$']
+    if(len(playfield) >= 16):
+        jewels = ['X', 'O', '#', '@', '%', '=', ':', '¥']
     else:
         jewels = ['X', 'O', '#', '@', '%', '=']
 
@@ -140,8 +140,8 @@ def find_matches(playfield):
                 start_x = x
             else:
                 matches += 1
-
-                if((x < 7) and (playfield[y][x+1] != char_match)) or ((x == 7)):
+                # Check matches count if next char is different or if current position is the very end
+                if((x < (len(playfield) - 1)) and (playfield[y][x+1] != char_match)) or ((x == (len(playfield) - 1))):
                     # If there were more than 3 in a row
                     if(matches > 2):
                         # Append all coords from stored position to destroy list
@@ -160,8 +160,8 @@ def find_matches(playfield):
                 start_y = y
             else:
                 matches += 1
-
-                if((y < 7) and (playfield[y+1][x] != char_match)) or ((y == 7)):
+                # Check matches count if next char is different or if current position is the very end
+                if((y < (len(playfield) - 1)) and (playfield[y+1][x] != char_match)) or ((y == (len(playfield) - 1))):
                     # If there were more than 3 in a row
                     if(matches > 2):
                         # Append all coords from stored position to destroy list
