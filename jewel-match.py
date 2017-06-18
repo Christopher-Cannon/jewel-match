@@ -104,12 +104,7 @@ def find_matches(playfield):
             # Check horizontally
             if(char_match != playfield[y][x]):
                 print("Held: {}, Cur: {}".format(char_match, playfield[y][x])) # DEBUG
-                # If there were more than 3 in a row
-                if(matches > 2):
-                    # Append all coords from stored position to destroy list
-                    for z in range(matches):
-                        destroy_list.append([y, start_x + z])
-                        print("Appending values...") # DEBUG
+
                 # Char to match next char against
                 char_match = playfield[y][x]
                 matches = 1
@@ -117,6 +112,14 @@ def find_matches(playfield):
             else:
                 matches += 1
                 print("Matches += 1, Val: {}".format(matches)) # DEBUG
+
+                if((x < 7) and (playfield[y][x+1] != char_match)) or ((x == 7)):
+                    # If there were more than 3 in a row
+                    if(matches > 2):
+                        # Append all coords from stored position to destroy list
+                        for z in range(matches):
+                            destroy_list.append([y, start_x + z])
+                            print("Appending values...") # DEBUG
 
             # Check vertically
 
