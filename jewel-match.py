@@ -34,6 +34,7 @@ def fill_empty(playfield):
 
     return playfield
 
+# Number guides along top or bottom
 def numbers_x(playfield):
     print('', end='   ')
 
@@ -224,14 +225,23 @@ def main():
             playfield = prepare_field(playfield, destroy_list)
             destroy_list = find_matches(playfield)
             jewels_marked += len(destroy_list)
-
+        # Add score/moves if jewels were destroyed
         if(jewels_marked > 0):
             score += (jewels_marked * combo) * 10
-            moves += 1 * (combo // 2)
 
+            print("Matched {} jewels!".format(jewels_marked))
             print("x{} combo!".format(combo))
             print("+{} score!".format((jewels_marked * combo) * 10))
-            print("+{} moves!\n".format(1 * ((combo // 2) + 1)))
+
+            if(jewels_marked < 6):
+                moves += 1
+                print("+1 moves!\n")
+            elif(6 <= jewels_marked < 10):
+                moves += 2
+                print("+2 moves!\n")
+            else:
+                moves += 3
+                print("+3 moves!\n")
         else:
             pass
 
