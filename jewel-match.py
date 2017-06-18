@@ -34,18 +34,30 @@ def fill_empty(playfield):
 
     return playfield
 
-# Output the playfield
-def display_playfield(playfield):
+def numbers_x(playfield):
+    print('', end='   ')
+
     for y in [x + 1 for x in range(len(playfield))]:
         print(y, end=' ')
     print('\n')
 
+# Output the playfield with number guides -- god this is a mess
+def display_playfield(playfield):
+    numbers_x(playfield)
+
     for row in range(len(playfield)):
+        if(row + 1 < 10):
+            print(row + 1, end='  ')
+        else:
+            print(row + 1, end=' ')
+
         for elem in playfield[row]:
             print(elem, end=' ')
 
         print('', row + 1)
     print('')
+
+    numbers_x(playfield)
 
 # Remove jewels marked in remove_list
 def remove_jewels(playfield, remove_list):
