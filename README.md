@@ -2,7 +2,7 @@
 Jewel matching game in the command line, made with python 3.
 
 ## how to play
-Choose a grid between 8 and 24 jewels wide/tall.
+Choose a grid between 7 and 10 jewels wide/tall.
 
 Select a jewel's co-ordinates and swap it with the jewel to its left or right.
 
