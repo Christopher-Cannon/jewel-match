@@ -8,6 +8,7 @@ def get_size():
             size = int(input("8 - 24: "))
 
             if(8 <= size <= 24):
+                print('')
                 return size
             else:
                 print("Invalid input, please try again")
@@ -40,6 +41,7 @@ def display_playfield(playfield):
             print(elem, end=' ')
 
         print('')
+    print('')
 
 # Remove jewels marked in remove_list
 def remove_jewels(playfield, remove_list):
@@ -60,7 +62,7 @@ def swap_jewels(playfield):
             x -= 1
             y -= 1
 
-            if(not(0 < x < len(playfield)) or not(0 < y < len(playfield))):
+            if(not(0 <= x < len(playfield)) or not(0 <= y < len(playfield))):
                 print("Invalid input, please try again")
                 continue
         except:
@@ -176,7 +178,7 @@ def prepare_field(playfield, destroy_list):
 
 # Main loop
 def main():
-    moves, score = 5, 0
+    moves, score = 3, 0
     size = get_size()
     playfield = create_playfield(size)
 
@@ -189,7 +191,7 @@ def main():
     display_playfield(playfield)
     # Continue while player has moves remaining
     while(moves > 0):
-        jewels_marked, combo = 0, 0
+        jewels_marked, combo = 0, 1
         print("Moves remaining: {}".format(moves))
         print("Current score: {}".format(score))
 
@@ -206,17 +208,13 @@ def main():
             playfield = prepare_field(playfield, destroy_list)
             destroy_list = find_matches(playfield)
 
-        if(jewels_marked > 0) and (combo > 0):
+        if(jewels_marked > 0):
             score += (jewels_marked * combo) * 10
-            moves += 1 * ((combo // 2) + 1)
-            
-            print("{} combo!".format(combo))
-            print("+ {} score".format((jewels_marked * combo) * 10))
-        elif(jewels_marked > 0) and (combo == 0):
-            score += jewels_marked * 10
-            moves += 1
+            moves += 1 * (combo // 2)
 
-            print("+ {} score".format(jewels_marked * 10))
+            print("x{} combo!".format(combo))
+            print("+{} score!".format((jewels_marked * combo) * 10))
+            print("+{} moves!".format(1 * (combo // 2)))
         else:
             pass
 
