@@ -220,7 +220,7 @@ def main():
 
             print("x{} combo!".format(combo))
             print("+{} score!".format((jewels_marked * combo) * 10))
-            print("+{} moves!".format(1 * ((combo // 2) + 1))
+            print("+{} moves!".format(1 * ((combo // 2) + 1)))
         else:
             pass
 
