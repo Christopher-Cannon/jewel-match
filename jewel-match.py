@@ -19,13 +19,13 @@ def get_size():
 
 # Create and populate jewel grid
 def create_playfield(size):
-    jewels = ['X', 'O', '#', '@', '%']
+    jewels = ['X', 'O', '#', '@', '%', '=']
 
     return [[random.choice(jewels) for x in range(size)] for y in range(size)]
 
 # Find any blank spots and fill with jewels
 def fill_empty(playfield):
-    jewels = ['X', 'O', '#', '@', '%']
+    jewels = ['X', 'O', '#', '@', '%', '=']
 
     for row in playfield:
         for x in range(len(row)):
