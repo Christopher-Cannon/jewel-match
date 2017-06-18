@@ -1,10 +1,10 @@
 import random
 
 # Create and populate jewel grid
-def create_playfield(width, height):
+def create_playfield(size):
     jewels = ['X', 'O', '#', '@', '%']
 
-    return [[random.choice(jewels) for x in range(width)] for y in range(height)]
+    return [[random.choice(jewels) for x in range(size)] for y in range(size)]
 
 # Find any blank spots and fill with jewels
 def fill_empty(playfield):
@@ -21,9 +21,9 @@ def fill_empty(playfield):
 def display_playfield(playfield):
     for row in playfield:
         for elem in row:
-            print(elem, end='  ')
+            print(elem, end=' ')
 
-        print('\n')
+        print('')
 
 # TEST: Remove a jewel to test check_field()
 def remove_jewels(playfield, remove_list):
@@ -95,13 +95,12 @@ def check_field(playfield):
 def find_matches(playfield):
     # Store coordinates to remove after one pass
     destroy_list = []
-
+    # Check horizontally
     for y in range(len(playfield)):
         matches, start_x, char_match = 1, 0, ''
 
         for x in range(len(playfield[y])):
             print("X: {}, Y: {}".format(x, y)) # DEBUG
-            # Check horizontally
             if(char_match != playfield[y][x]):
                 print("Held: {}, Cur: {}".format(char_match, playfield[y][x])) # DEBUG
 
@@ -121,11 +120,40 @@ def find_matches(playfield):
                             destroy_list.append([y, start_x + z])
                             print("Appending values...") # DEBUG
 
-            # Check vertically
+    # Check vertically
+    x, y = 0, 0
+    while(x < len(playfield[y])):
+        matches, start_y, char_match = 1, 0, ''
+
+        while(y < len(playfield)):
+            print("X: {}, Y: {}, char: {}".format(x, y, playfield[y][x]))
+
+            if(char_match != playfield[y][x]):
+                print("Held: {}, Cur: {}".format(char_match, playfield[y][x])) # DEBUG
+
+                # Char to match next char against
+                char_match = playfield[y][x]
+                matches = 1
+                start_y = y
+            else:
+                matches += 1
+                print("Matches += 1, Val: {}".format(matches)) # DEBUG
+
+                if((y < 7) and (playfield[y+1][x] != char_match)) or ((y == 7)):
+                    # If there were more than 3 in a row
+                    if(matches > 2):
+                        # Append all coords from stored position to destroy list
+                        for z in range(matches):
+                            destroy_list.append([start_y + z, x])
+                            print("Appending values...") # DEBUG
+
+            y += 1
+        y = 0
+        x += 1
 
     return destroy_list
 
-playfield = create_playfield(8, 8)
+playfield = create_playfield(8)
 display_playfield(playfield)
 
 print('Created playfield\n') # DEBUG
