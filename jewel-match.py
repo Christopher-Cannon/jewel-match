@@ -216,7 +216,7 @@ def main():
 
         if(jewels_marked > 0):
             score += (jewels_marked * combo) * 10
-            moves += 1 * (combo // 2)
+            moves += 1 * ((combo // 2) + 1)
 
             print("x{} combo!".format(combo))
             print("+{} score!".format((jewels_marked * combo) * 10))
