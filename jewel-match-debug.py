@@ -1,21 +1,5 @@
 import random
 
-# Determine size of playfield
-def get_size():
-    while(True):
-        try:
-            print("Choose a grid size")
-            size = int(input("8 - 24: "))
-
-            if(8 <= size <= 24):
-                return size
-            else:
-                print("Invalid input, please try again")
-                continue
-        except:
-            print("Invalid input, please try again")
-            continue
-
 # Create and populate jewel grid
 def create_playfield(size):
     jewels = ['X', 'O', '#', '@', '%']
@@ -41,7 +25,7 @@ def display_playfield(playfield):
 
         print('')
 
-# Remove jewels marked in remove_list
+# TEST: Remove a jewel to test check_field()
 def remove_jewels(playfield, remove_list):
     for c in remove_list:
         playfield[c[0]][c[1]] = ' '
@@ -89,7 +73,7 @@ def swap_jewels(playfield):
         return playfield
 
 # If a jewel is removed, move above jewels down one
-def drop_jewels(playfield):
+def check_field(playfield):
     for y in range(len(playfield)):
         for x in range(len(playfield[y])):
             if(playfield[y][x] == ' '):
@@ -116,13 +100,17 @@ def find_matches(playfield):
         matches, start_x, char_match = 1, 0, ''
 
         for x in range(len(playfield[y])):
+            print("X: {}, Y: {}".format(x, y)) # DEBUG
             if(char_match != playfield[y][x]):
+                print("Held: {}, Cur: {}".format(char_match, playfield[y][x])) # DEBUG
+
                 # Char to match next char against
                 char_match = playfield[y][x]
                 matches = 1
                 start_x = x
             else:
                 matches += 1
+                print("Matches += 1, Val: {}".format(matches)) # DEBUG
 
                 if((x < 7) and (playfield[y][x+1] != char_match)) or ((x == 7)):
                     # If there were more than 3 in a row
@@ -130,19 +118,26 @@ def find_matches(playfield):
                         # Append all coords from stored position to destroy list
                         for z in range(matches):
                             destroy_list.append([y, start_x + z])
+                            print("Appending values...") # DEBUG
+
     # Check vertically
     x, y = 0, 0
     while(x < len(playfield[y])):
         matches, start_y, char_match = 1, 0, ''
 
         while(y < len(playfield)):
+            print("X: {}, Y: {}, char: {}".format(x, y, playfield[y][x]))
+
             if(char_match != playfield[y][x]):
+                print("Held: {}, Cur: {}".format(char_match, playfield[y][x])) # DEBUG
+
                 # Char to match next char against
                 char_match = playfield[y][x]
                 matches = 1
                 start_y = y
             else:
                 matches += 1
+                print("Matches += 1, Val: {}".format(matches)) # DEBUG
 
                 if((y < 7) and (playfield[y+1][x] != char_match)) or ((y == 7)):
                     # If there were more than 3 in a row
@@ -150,6 +145,7 @@ def find_matches(playfield):
                         # Append all coords from stored position to destroy list
                         for z in range(matches):
                             destroy_list.append([start_y + z, x])
+                            print("Appending values...") # DEBUG
 
             y += 1
         y = 0
@@ -157,29 +153,27 @@ def find_matches(playfield):
 
     return destroy_list
 
-# Remove jewels marked by destroy_list and re-populate
-def prepare_field(playfield, destroy_list):
-    playfield = remove_jewels(playfield, destroy_list)
-    playfield = drop_jewels(playfield)
-    playfield = fill_empty(playfield)
+playfield = create_playfield(8)
+display_playfield(playfield)
 
-    return playfield
+print('Created playfield\n') # DEBUG
 
-def main():
-    moves = 5
-    size = get_size()
-    playfield = create_playfield(size)
+ret_list = find_matches(playfield)
+print(ret_list)
 
-    destroy_list = find_matches(playfield)
-    print(destroy_list)
+print('\nReturned coords of jewels to remove\n') # DEBUG
 
-    while(destroy_list != []):
-        print(destroy_list == [])
-        playfield = prepare_field(playfield, destroy_list)
+playfield = remove_jewels(playfield, ret_list)
+display_playfield(playfield)
 
-        destroy_list = find_matches(playfield)
-        print(destroy_list)
+print('Removed jewels\n') # DEBUG
 
-    display_playfield(playfield)
+playfield = check_field(playfield)
+display_playfield(playfield)
 
-main()
+print('Playfield checked\n') # DEBUG
+
+playfield = fill_empty(playfield)
+display_playfield(playfield)
+
+print('Jewels added\n') # DEBUG
