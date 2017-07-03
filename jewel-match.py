@@ -18,15 +18,11 @@ def get_size():
             continue
 
 # Create and populate jewel grid
-def create_playfield(size):
-    jewels = ['X', 'O', '#', '@', '%', '=']
-
+def create_playfield(jewels, size):
     return [[random.choice(jewels) for x in range(size)] for y in range(size)]
 
 # Find any blank spots and fill with jewels
-def fill_empty(playfield):
-    jewels = ['X', 'O', '#', '@', '%', '=']
-
+def fill_empty(jewels, playfield):
     for row in playfield:
         for x in range(len(row)):
             if(row[x] == ' '):
@@ -186,23 +182,23 @@ def find_matches(playfield):
     return destroy_list
 
 # Remove jewels marked by destroy_list and re-populate
-def prepare_field(playfield, destroy_list):
+def prepare_field(jewels, playfield, destroy_list):
     playfield = remove_jewels(playfield, destroy_list)
     playfield = drop_jewels(playfield)
-    playfield = fill_empty(playfield)
+    playfield = fill_empty(jewels, playfield)
 
     return playfield
 
 # Main loop
 def main():
-    moves, score = 3, 0
+    moves, score, jewels = 3, 0, ['X', 'O', '#', '@', '%', '=']
     size = get_size()
-    playfield = create_playfield(size)
+    playfield = create_playfield(jewels, size)
 
     destroy_list = find_matches(playfield)
     # Ensure that playfield has no combos before starting
     while(destroy_list != []):
-        playfield = prepare_field(playfield, destroy_list)
+        playfield = prepare_field(jewels, playfield, destroy_list)
         destroy_list = find_matches(playfield)
 
     display_playfield(playfield)
@@ -222,7 +218,7 @@ def main():
         while(destroy_list != []):
             combo += 1
 
-            playfield = prepare_field(playfield, destroy_list)
+            playfield = prepare_field(jewels, playfield, destroy_list)
             destroy_list = find_matches(playfield)
             jewels_marked += len(destroy_list)
         # Add score/moves if jewels were destroyed
