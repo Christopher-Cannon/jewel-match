@@ -1,4 +1,4 @@
-# 4 - Attempt to find consecutive rows of 3 or more matching jewels
+# 4 - Attempt to find consecutive rows of 3 or more matching jewels - horizontal
 
 import random
 
