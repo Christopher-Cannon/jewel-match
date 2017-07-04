@@ -1,4 +1,4 @@
-# 6 - Remove any jewels in the destroy list
+# 8 - Fill any empty spaces in the playfield
 
 import random
 
@@ -27,11 +27,31 @@ def remove_jewels(grid, remove_list):
 
 # If a jewel is removed, move above jewels down one
 def drop_jewels(grid):
-    return 0
+        for y in range(len(grid)):
+            for x in range(len(grid[y])):
+                if(grid[y][x] == ' '):
+                    if(y > 0):
+                        pos = y
+                        # Move jewels down and empty space up
+                        while(pos > 0):
+                            grid[pos][x], grid[pos - 1][x] = grid[pos - 1][x], grid[pos][x]
+
+                            pos -= 1
+                    else:
+                        pass
+                else:
+                    pass
+
+        return grid
 
 # Find any blank spots and fill with jewels
 def fill_empty(jewels, grid):
-    return 0
+        for row in grid:
+            for x in range(len(row)):
+                if(row[x] == ' '):
+                    row[x] = random.choice(jewels)
+
+        return grid
 
 # Swap a jewel with either its left or right neighbour
 def swap_jewels(grid):
@@ -142,6 +162,16 @@ def main():
 
     destroy_list = find_matches(playfield)
     playfield = remove_jewels(playfield, destroy_list)
+
+    print('')
+
+    display_playfield(playfield)
+    playfield = drop_jewels(playfield)
+
+    print('')
+
+    display_playfield(playfield)
+    playfield = fill_empty(jewels, playfield)
 
     print('')
 

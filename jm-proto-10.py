@@ -1,4 +1,4 @@
-# 6 - Remove any jewels in the destroy list
+# 10 - Implement number guides for the playfield
 
 import random
 
@@ -8,15 +8,29 @@ def create_playfield(jewels, size):
 
 # Number guides along top or bottom
 def numbers_x(grid):
-    return 0
+    print('', end='   ')
+
+    for y in [x + 1 for x in range(len(grid))]:
+        print(y, end=' ')
+    print('\n')
 
 # Output the playfield with number guides
 def display_playfield(grid):
+    numbers_x(grid)
+
     for row in range(len(grid)):
+        if(row + 1 < 10):
+            print(row + 1, end='  ')
+        else:
+            print(row + 1, end=' ')
+
         for elem in grid[row]:
             print(elem, end=' ')
 
-        print('')
+        print('', row + 1)
+    print('')
+
+    numbers_x(grid)
 
 # Remove jewels marked in remove_list
 def remove_jewels(grid, remove_list):
@@ -27,11 +41,31 @@ def remove_jewels(grid, remove_list):
 
 # If a jewel is removed, move above jewels down one
 def drop_jewels(grid):
-    return 0
+        for y in range(len(grid)):
+            for x in range(len(grid[y])):
+                if(grid[y][x] == ' '):
+                    if(y > 0):
+                        pos = y
+                        # Move jewels down and empty space up
+                        while(pos > 0):
+                            grid[pos][x], grid[pos - 1][x] = grid[pos - 1][x], grid[pos][x]
+
+                            pos -= 1
+                    else:
+                        pass
+                else:
+                    pass
+
+        return grid
 
 # Find any blank spots and fill with jewels
 def fill_empty(jewels, grid):
-    return 0
+        for row in grid:
+            for x in range(len(row)):
+                if(row[x] == ' '):
+                    row[x] = random.choice(jewels)
+
+        return grid
 
 # Swap a jewel with either its left or right neighbour
 def swap_jewels(grid):
@@ -131,17 +165,21 @@ def find_matches(grid):
 
 # Remove jewels marked by destroy_list and re-populate
 def prepare_field(jewels, grid, destroy_list):
-    return 0
+    grid = remove_jewels(grid, destroy_list)
+    grid = drop_jewels(grid)
+    grid = fill_empty(jewels, grid)
+
+    return grid
 
 # Main loop
 def main():
-    jewels = ['X', 'O', '#', '@', '%', '=']
+    jewel_list = ['X', 'O', '#', '@', '%', '=']
 
-    playfield = create_playfield(jewels, 10)
+    playfield = create_playfield(jewel_list, 10)
     display_playfield(playfield)
 
-    destroy_list = find_matches(playfield)
-    playfield = remove_jewels(playfield, destroy_list)
+    remove_list = find_matches(playfield)
+    prepare_field(jewel_list, playfield, remove_list)
 
     print('')
 
