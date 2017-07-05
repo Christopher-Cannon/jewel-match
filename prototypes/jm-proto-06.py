@@ -20,10 +20,10 @@ def display_playfield(grid):
 
 # Remove jewels marked in remove_list
 def remove_jewels(grid, remove_list):
-        for coords in remove_list:
-            grid[coords[0]][coords[1]] = ' '
+    for coords in remove_list:
+        grid[coords[0]][coords[1]] = ' '
 
-        return grid
+    return grid
 
 # If a jewel is removed, move above jewels down one
 def drop_jewels(grid):
